@@ -1,11 +1,5 @@
 const mongoose = require('mongoose');
-const options = {
-    useUnifiedTopology: true,
-    useCreateIndex:true,
-    useFindAndModify: false,
-
-}
-
-exports.connect = async (connectionURI) => {
-    await mongoose.connect(connectionURI, options);
+module.exports = async (connectionURI) => {
+    mongoose.set('strictQuery', false);
+    await mongoose.connect(connectionURI);
 }
