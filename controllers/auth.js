@@ -1,7 +1,10 @@
+// const Employee = require('../models/Users/Employee');
 const Employee = require('../models/Users/Employee');
 const {BadRequestError} = require('../errors');
 const passwordStrength = require('check-password-strength');
 const {StatusCodes} = require('http-status-codes');
+
+
 
 const register = async (req, res) => {
     const {email, name, password} = req.body;
@@ -11,7 +14,6 @@ const register = async (req, res) => {
         password
     });
 
-
     res.status(StatusCodes.OK).json({
         statusCode: StatusCodes.OK,
         success: true,
@@ -20,6 +22,7 @@ const register = async (req, res) => {
     });
 
 }
+
 
 const login = async (req, res) => {
 

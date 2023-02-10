@@ -1,33 +1,21 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const {Schema, model} = require('mongoose');
-const User = require('./User');
+const {model} = require('mongoose');
+const User = require('./BaseUser');
 
-const EmployeeSchema = new Schema({
-    ...User,
+const employeeDefinition = {
     files: {
-        type:[Schema.Types.ObjectId],
+        type:[User.Types.ObjectId],
         default: [] 
     },
     emails: {
-        type:[Schema.Types.ObjectId],
+        type:[User.Types.ObjectId],
         default: [] 
     }
-});
-
-EmployeeSchema.methods.generateToken = function() {
-    const payload = {
-        userId: this._id,
-        userEmail: this.email
-    }
-    const token = jwt.sign(payload, process.env['JWT_KEY']);
-    return token;
 }
 
-EmployeeSchema.pre('save', async function() {
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    this.password = await bcrypt.hash(this.password, salt);
-});
+class Employee extends User {
+    constructor() {
+        super(employeeDefinition);
+    }
+}
 
-module.exports = model('Employee', EmployeeSchema);
+module.exports = model('Employee', (new Employee()));
